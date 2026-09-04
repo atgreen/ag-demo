@@ -1,7 +1,7 @@
 # ag-demo
 
-A demo of Dependabot updating Maven dependencies from **two** sources at
-once:
+A small Spring application demonstrating Dependabot updating Maven
+dependencies from **two** sources at once:
 
 1. **Maven Central** (the implicit default) — normal upstream version bumps.
 2. **[ag-maven-demo](https://github.com/atgreen/ag-maven-demo)** — a curated
@@ -32,7 +32,7 @@ containment with one `ignore` rule in
 
 ```yaml
 ignore:
-  - dependency-name: "org.springframework:spring-core"
+  - dependency-name: "org.springframework:*"
     versions: ["[5.3.19,)"]
 ```
 
@@ -50,11 +50,15 @@ proposes, fetched from the second registry.
 3. The job log (linked from the same page) shows the registry URLs being
    queried — both `repo1.maven.org` and `raw.githubusercontent.com`.
 
-## Building
+## Building and running
+
+The application is a plain Spring Framework app — an annotation-config
+`ApplicationContext` wired via `@ComponentScan`, with a `Greeter` bean that
+uses `commons-text`. It prints a greeting and the running spring-core
+version:
 
 ```bash
-mvn -q package
-java -cp target/classes:$(mvn -q dependency:build-classpath -Dmdep.outputFile=/dev/stdout) org.agdemo.App
+mvn -q compile exec:java
 ```
 
 The `pom.xml` declares the `ag-maven-demo` repository, so once Dependabot's

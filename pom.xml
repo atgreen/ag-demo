@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <name>ag-demo</name>
-  <description>Dependabot demo: updates from Maven Central plus a curated repository of patched builds</description>
+  <description>Spring application demonstrating Dependabot updates from Maven Central plus a curated repository of patched builds</description>
 
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
@@ -33,6 +33,11 @@
       <artifactId>spring-core</artifactId>
       <version>5.3.18</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.18</version>
+    </dependency>
 
     <!-- Deliberately outdated (CVE-2022-42889); updated from Maven Central. -->
     <dependency>
@@ -41,4 +46,17 @@
       <version>1.9</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>org.agdemo.App</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -13,8 +13,10 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 5
     ignore:
-      # Keep spring-core on the patched 5.3.18 line. Maven Central's newer
-      # plain releases (5.3.39, 6.x, ...) would otherwise outrank the
-      # patched 5.3.18.ag-00001 build, which sorts just above 5.3.18.
-      - dependency-name: "org.springframework:spring-core"
+      # Keep the Spring Framework on the patched 5.3.18 line. Maven
+      # Central's newer plain releases (5.3.39, 6.x, ...) would otherwise
+      # outrank the patched 5.3.18.ag-00001 build, which sorts just above
+      # 5.3.18. Only spring-core has a patched candidate, so the other
+      # spring artifacts simply stay put.
+      - dependency-name: "org.springframework:*"
         versions: ["[5.3.19,)"]
