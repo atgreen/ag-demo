@@ -1,4 +1,6 @@
 version: 2
+# The ag-maven-demo registry is a static Maven repository served from
+# raw.githubusercontent.com; it needs no credentials.
 registries:
   ag-maven-demo:
     type: maven-repository
