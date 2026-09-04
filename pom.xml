@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.agdemo</groupId>
+  <artifactId>ag-demo</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>ag-demo</name>
+  <description>Dependabot demo: updates from Maven Central plus a curated repository of patched builds</description>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>ag-maven-demo</id>
+      <url>https://raw.githubusercontent.com/atgreen/ag-maven-demo/main</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- Served from the ag-maven-demo repository once Dependabot bumps it
+         to the patched 5.3.18.ag-00001 build. -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.3.18</version>
+    </dependency>
+
+    <!-- Deliberately outdated (CVE-2022-42889); updated from Maven Central. -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.9</version>
+    </dependency>
+  </dependencies>
+</project>

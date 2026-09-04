@@ -1,0 +1,20 @@
+version: 2
+registries:
+  ag-maven-demo:
+    type: maven-repository
+    url: https://raw.githubusercontent.com/atgreen/ag-maven-demo/main
+
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    registries:
+      - ag-maven-demo
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    ignore:
+      # Keep spring-core on the patched 5.3.18 line. Maven Central's newer
+      # plain releases (5.3.39, 6.x, ...) would otherwise outrank the
+      # patched 5.3.18.ag-00001 build, which sorts just above 5.3.18.
+      - dependency-name: "org.springframework:spring-core"
+        versions: ["[5.3.19,)"]
