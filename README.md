@@ -17,18 +17,28 @@ The project pins two deliberately outdated dependencies:
 | Dependency | Pinned | Expected PR | Source |
 |---|---|---|---|
 | `org.apache.commons:commons-text` | `1.9` (CVE-2022-42889) | bump to latest release | Maven Central |
-| `org.springframework:spring-core` | `5.3.18` | bump to `5.3.18.ag-00001` | ag-maven-demo |
+| `org.springframework:spring-core` | `5.3.17.ag-00001` | bump to `5.3.18.ag-00001` | ag-maven-demo |
 
-The interesting one is `spring-core`. Maven's version ordering treats an
-unknown qualifier as *greater than* the plain release, so
-`5.3.18.ag-00001 > 5.3.18` — a patched rebuild is a legitimate upgrade
-target without inventing a fake version number.
+The interesting one is `spring-core`. The project is already on the
+patched line (`5.3.17.ag-00001`), and Dependabot proposes the newer
+patched build based on `5.3.18`. Two version-ordering details make this
+work:
 
-Central, however, also has plain `5.3.39` and `6.x`, which sort higher
-still. In a full repository-manager setup you'd contain those with a
-virtual repo and priority resolution; here the demo emulates that
-containment with one `ignore` rule in
-[`.github/dependabot.yml`](.github/dependabot.yml):
+- Maven treats an unknown qualifier as *greater than* the plain release,
+  so `5.3.18.ag-00001 > 5.3.18` — a patched rebuild is a legitimate
+  upgrade target without inventing a fake version number.
+- Dependabot only considers candidates whose alphabetic qualifier
+  matches the current version's. Starting from a *plain* `5.3.18`,
+  the `.ag` builds would be filtered out as a different version type —
+  which is why the project pins a suffixed version to begin with, just
+  as real consumers of a curated repository do. The same filter works
+  *for* us afterward: plain upstream releases can't drag the project off
+  the patched line.
+
+Central also has plain `5.3.39` and `6.x`, which sort higher still. In a
+full repository-manager setup you'd contain those with a virtual repo and
+priority resolution; here the demo emulates that containment with one
+`ignore` rule in [`.github/dependabot.yml`](.github/dependabot.yml):
 
 ```yaml
 ignore:
@@ -46,7 +56,7 @@ proposes, fetched from the second registry.
    manually: **Insights → Dependency graph → Dependabot → Recent update
    jobs → Check for updates**.
 2. Two PRs should appear: `commons-text 1.9 → 1.x` and
-   `spring-core 5.3.18 → 5.3.18.ag-00001`.
+   `spring-core 5.3.17.ag-00001 → 5.3.18.ag-00001`.
 3. The job log (linked from the same page) shows the registry URLs being
    queried — both `repo1.maven.org` and `raw.githubusercontent.com`.
 

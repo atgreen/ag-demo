@@ -26,12 +26,12 @@
   </repositories>
 
   <dependencies>
-    <!-- Served from the ag-maven-demo repository once Dependabot bumps it
-         to the patched 5.3.18.ag-00001 build. -->
+    <!-- A patched build from the ag-maven-demo repository. Dependabot
+         bumps it to the fixed 5.3.18.ag-00001 build from the same repo. -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.18</version>
+      <version>5.3.17.ag-00001</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
