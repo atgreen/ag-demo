@@ -60,6 +60,37 @@ proposes, fetched from the second registry.
 3. The job log (linked from the same page) shows the registry URLs being
    queried — both `repo1.maven.org` and `raw.githubusercontent.com`.
 
+## Onboarding: getting from plain `5.3.17` onto the patched line
+
+Dependabot **cannot** make the first move. Its suffix-compatibility check
+(`maven/lib/dependabot/maven/shared/shared_version_finder.rb` in
+dependabot-core) requires the candidate's qualifier to exactly match the
+current version's, and a plain version has none — so `5.3.17.ag-00001` is
+silently filtered for anyone pinned at `5.3.17`. There is no configuration
+option to disable this. Options:
+
+1. **Renovate does it.** Renovate's Maven versioning has no
+   suffix-compatibility filter, treats unknown qualifiers as stable, and
+   reads this pom's `<repositories>` automatically. With the containment
+   rule in [`renovate.json`](renovate.json), a project pinned at plain
+   `5.3.17` gets a PR to `5.3.17.ag-00001` (verified with
+   `renovate --platform=local`). After onboarding, either bot can maintain
+   the patched line.
+2. **Version patched builds with a purely numeric extra segment**
+   (`5.3.17.1` instead of `5.3.17.ag-00001`). Both versions then have "no
+   suffix" as far as Dependabot's filter is concerned, so plain-version
+   consumers get the PR — and respins (`5.3.17.2`) work too, which the
+   suffix scheme doesn't (see below). The cost is losing the visible
+   vendor marker in the version string.
+3. **A one-time onboarding PR** produced outside the update bot (a script
+   or scheduled workflow rewriting plain pins to their patched-line
+   equivalents), after which Dependabot maintains the line.
+
+A related Dependabot caveat: the compared suffix includes the respin
+counter, so from `5.3.17.ag-00001` a future `5.3.18.ag-00002` would also
+be filtered. Bumps only flow between versions whose suffix strings match
+exactly (`ag-00001` → `ag-00001`).
+
 ## Building and running
 
 The application is a plain Spring Framework app — an annotation-config
